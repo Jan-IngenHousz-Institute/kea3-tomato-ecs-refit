@@ -20,18 +20,19 @@ ECSt (a proxy for the proton motive force across the thylakoid membrane) for 1,3
 The measurements live on the openJII platform, where they can be browsed, filtered, charted and downloaded:
 
 - Experiment: [KEA3 tomato drought trial (MultispeQ, RL3)](https://openjii.org/en-US/platform/experiments/e0acb807-5a1a-4f35-8902-a1d8629d4cc9)
-- Dashboards on the experiment page: *Paper companion: KEA3 drought (Fig. 4)* and *Data quality (QC)*; a third one
-  built on the re-fitted values follows once the upload table is live
-- The re-fitted values are uploaded to the experiment as the data table `ecs_refit` (visible under the experiment's data tables once processed)
+- Dashboards on the experiment page: *Paper companion: KEA3 drought (Fig. 4)*, *Data quality (QC)*, and
+  [*Fig. 4 from re-fitted ECSt*](https://openjii.org/en-US/platform/experiments/e0acb807-5a1a-4f35-8902-a1d8629d4cc9/dashboards/fdb0e3cd-fd7a-4b63-8322-3e62edff2c86),
+  which is built on the table this notebook produces
+- The re-fitted values are on the experiment as the data table `ecs_refit` (1,380 rows, one per measurement)
 
 Nothing in this repository reads Databricks or any internal system; everything goes through the public openJII REST API.
 
 ## Why a re-fit
 
-The PhotosynQ macro fits a single exponential to the 520 nm ECS decay inside the device pipeline. Where that fit
-converges it agrees with the re-fit (Pearson r about 0.96 for ECSt and 0.94 for gH+ within the plotted ranges, see
-`outputs/refit_vs_macro.png`), but where it fails it returns extreme or negative values that would have to be
-filtered by hand. The re-fit below handles every trace the same way, so the paper uses the re-fitted values.
+The PhotosynQ macro fits a single exponential to the 520 nm ECS decay inside the device pipeline. Within the plotted
+ranges its values agree with the re-fit (Pearson r about 0.96 for ECSt and 0.94 for gH+, see
+`outputs/refit_vs_macro.png`), but on some traces it returns extreme or negative values (ECSt down to −11.5,
+gH+ to −3×10⁵). The re-fit below applies one documented procedure to every trace, and the paper uses its values.
 The notebook re-fits every trace from `ECS_averaged_trace`:
 
 1. linear regression on points 0 to 17 gives the baseline, which is subtracted from the whole trace;
@@ -43,8 +44,8 @@ Figure filters: `PAR != 0`, `0 <= ECSt_calc <= 0.004`, `0 <= NPQt <= 5`, lines W
 
 ## Run it
 
-You need an openJII account and a personal API key (openjii.org → Profile menu → Account → API keys). The experiment
-is public, so any account can read it.
+You need an openJII account with access to the experiment and a personal API key (openjii.org → Profile menu → Account →
+API keys). The experiment is public; until its embargo date only signed-in users can read it.
 
 ```bash
 git clone https://github.com/Jan-IngenHousz-Institute/kea3-tomato-ecs-refit.git
