@@ -1,0 +1,18 @@
+# secrets
+.env
+
+# data is fetched from openJII at run time and never committed
+data/
+
+# python / uv
+.venv/
+__pycache__/
+*.pyc
+
+# jupyter
+.ipynb_checkpoints/
+
+# os / editors
+.DS_Store
+.idea/
+.vscode/
