@@ -23,7 +23,10 @@ The measurements live on the openJII platform, where they can be browsed, filter
 - Dashboards on the experiment page: *Paper companion: KEA3 drought (Fig. 4)*, *Data quality (QC)*, and
   [*Fig. 4 from re-fitted ECSt*](https://openjii.org/en-US/platform/experiments/e0acb807-5a1a-4f35-8902-a1d8629d4cc9/dashboards/fdb0e3cd-fd7a-4b63-8322-3e62edff2c86),
   which is built on the table this notebook produces
+- Revised view: [*Fig. 4 C/D — SPAD-coloured*](https://openjii.org/en-US/platform/experiments/e0acb807-5a1a-4f35-8902-a1d8629d4cc9/dashboards/ba36a3ac-dca9-4790-b783-59c946998635),
+  split into genotype rows and Control/Drought columns
 - The re-fitted values are on the experiment as the data table `ecs_refit` (1,380 rows, one per measurement)
+- The SPAD-enabled dashboard uses `ecs_refit_spad` (1,380 rows, one per measurement)
 
 Nothing in this repository reads Databricks or any internal system; everything goes through the public openJII REST API.
 
@@ -41,6 +44,8 @@ The notebook re-fits every trace from `ECS_averaged_trace`:
 4. `ECSt_calc = a`, `tau_refit = tau`, `gH+_refit = 1000 / tau`.
 
 Figure filters: `PAR != 0`, `0 <= ECSt_calc <= 0.004`, `0 <= NPQt <= 5`, lines W, p1, p2.
+The C/D redraw keeps those published filters and replicate counts, places each genotype in its own row, keeps Control and
+Drought as columns, and colours every point by SPAD on one shared scale across all six panels.
 
 ## Run it
 
@@ -65,16 +70,32 @@ The first run downloads the 1,380 measurements into `data/raw/` (about 12 MB, gi
 table to `data/processed/ecs_refit.parquet` (git-ignored). Later runs use the local copy; delete `data/raw/` to refresh.
 Runtime is about one minute.
 
+## MultispeQ device-bias validation
+
+`notebooks/multispeq_device_bias_validation.ipynb` tests whether device identity explains residual variation after
+controlling for plant, measurement date, time of day and PAR, then repeats the pre-specified ECSt and NPQt biological
+contrasts with device included in the model. Standard errors are clustered by plant and contrast p-values are controlled
+at 5% FDR. The notebook also repeats the analysis using only the two devices measured on every date.
+
+Device identity explains residual variation in both re-fitted ECSt and NPQt, but none of the 14 biological contrasts
+changes direction or FDR significance after device adjustment. This is an experiment-specific robustness analysis, not
+a laboratory calibration of the instruments.
+
 ## What is in here
 
 | Path | What |
 |---|---|
 | `notebooks/kea3_tomato_ecs_refit.ipynb` | the reproducible notebook, committed with its outputs |
+| `notebooks/multispeq_device_bias_validation.ipynb` | within-plant device-bias estimates and adjusted statistical contrasts |
 | `notebooks/original/` | the original analysis notebook by Thekla von Bismarck, unchanged, for provenance |
-| `outputs/fig4_control_drought.png` | Fig. 4 C and D redrawn from the re-fit |
+| `outputs/fig4_control_drought.png` | Fig. 4 C and D redrawn from the re-fit, faceted by genotype and coloured by SPAD |
 | `outputs/fig4_recovery.png` | the same plot for the recovery day (not in the paper) |
 | `outputs/refit_vs_macro.png` | device macro values against the re-fit |
 | `outputs/example_fits.png` | eight example traces with their fits |
+| `outputs/device_bias_validation.png` | device allocation, estimated offsets and before/after contrast comparison |
+| `outputs/device_bias_validation.md` | full methods, results, interpretation and limitations for the device-bias analysis |
+| `outputs/device_bias_*.csv` | model summaries, offsets, contrasts and cross-date sensitivity results |
+| `data/processed/fig4_device_adjusted.parquet` | the 565 published-subset rows with device-adjusted ECSt and NPQt columns |
 | `outputs/legend_counts.md` | the per-line replicate counts, checked against the figure legend |
 
 ## Codes used in the data
