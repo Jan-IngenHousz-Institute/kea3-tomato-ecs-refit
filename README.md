@@ -77,12 +77,13 @@ controlling for plant, measurement date, time of day and PAR, then repeats the p
 contrasts with device included in the model. Standard errors are clustered by plant and contrast p-values are controlled
 at 5% FDR. The notebook also repeats the analysis using only the two devices measured on every date.
 
-Device identity explains residual variation in both re-fitted ECSt and NPQt, but none of the 14 biological contrasts
-changes direction or FDR significance after device adjustment in the published-subset model. A paired plant-cluster
-bootstrap bounds all device-induced contrast changes within 0.20 outcome SD (11 of 14 within the stricter 0.10-SD
-margin). A matched-date sensitivity retains every direction but changes two borderline FDR calls, and within-plant-date
-models show that relative device offsets vary by date. This is an experiment-specific robustness analysis, not a
-laboratory calibration of the instruments.
+Descriptive within-plant fits show residual structure associated with device identity in both re-fitted ECSt and NPQt,
+but their CR1 p-values and offset intervals are exploratory because the models have more parameters than plant
+clusters. None of the 14 biological contrasts changes direction or FDR significance after device adjustment in the
+published-subset model. A paired plant-cluster bootstrap bounds all device-induced contrast changes within 0.20 outcome
+SD (11 of 14 within the stricter 0.10-SD margin), while a matched-date sensitivity retains every direction but changes
+two borderline FDR calls. High-dimensional within-plant-date models likewise suggest possible date-varying offsets but
+are not treated as confirmatory. This is an experiment-specific robustness analysis, not a laboratory calibration.
 
 ## What is in here
 
