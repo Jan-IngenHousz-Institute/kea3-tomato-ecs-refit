@@ -1,0 +1,5 @@
+outcome,model,interaction_F,interaction_df_num,interaction_df_den,interaction_p_value
+ECSt_calc,unadjusted,0.5309769411205808,2.0,68.0,0.5904481328516273
+ECSt_calc,device_aware,0.5264838271463831,2.0,68.0,0.5930662470029312
+NPQt,unadjusted,2.182287660137078,2.0,68.0,0.12061975130306482
+NPQt,device_aware,3.8775998150685482,2.0,68.0,0.025426104905525253

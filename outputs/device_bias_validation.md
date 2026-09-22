@@ -2,7 +2,7 @@
 
 ## Question and conclusion
 
-This analysis asks whether MultispeQ device identity contributes systematic variation to the re-fitted ECSt and NPQt values used in Fig. 4 C/D, and whether accounting for that variation changes the biological conclusions. Device identity was associated with residual variation in both outcomes, but **none of the 14 pre-specified genotype/treatment contrasts changed direction or 5% FDR significance after device adjustment**. The result was unchanged when the analysis was restricted to the two devices used on every measurement date.
+Device identity was associated with residual variation in both outcomes, but adding device to the published-subset model changed **0 of 14 FDR decisions** and **0 contrast directions**. Formal paired-bootstrap equivalence was established at the strict 0.10-SD margin for **11 contrasts** and at the 0.20-SD margin for the remaining **3 contrasts**; **0 were inconclusive**. The matched-date analysis retained every direction but changed **2 FDR decisions**, so the strongest conclusion is stability of direction and effect scale rather than identical significance calls under every date specification.
 
 A device term is evidence of device-associated residual structure in this experiment. It is not, by itself, proof of a hardware calibration error because device assignment was not fully randomized and two devices were used on only one date.
 
@@ -27,7 +27,7 @@ For each outcome, a within-plant model compared a reduced specification (`plant 
 
 Centred device offsets were calculated as equal-device counterfactual predictions from the full within-plant model. They describe model-estimated shifts relative to the mean device, not absolute calibration corrections.
 
-The biological model estimated genotype × treatment contrasts while controlling for date, log(PAR), and a quadratic time-of-day term. The device-aware version additionally included device identity. Seven pre-specified contrasts were evaluated for each of two outcomes (14 total), using plant-clustered standard errors and Benjamini–Hochberg adjustment within each outcome/model family.
+The biological model estimated genotype × treatment contrasts while controlling for date, log(PAR), and a quadratic time-of-day term. The device-aware version additionally included device identity. Seven pre-specified contrasts were evaluated for each of two outcomes (14 total), using plant-clustered standard errors and Benjamini–Hochberg adjustment within each outcome/model family and, secondarily, across all 14 contrasts. A paired 5,000-replicate plant-cluster bootstrap directly estimated the change caused by device adjustment. Matched-date models added genotype × treatment × date, while the stricter device model used plant × date fixed effects.
 
 ## Device-associated variation
 
@@ -70,18 +70,48 @@ Across all 14 contrasts, **0 changed 5% FDR significance** and **0 changed direc
 | NPQt | p1 − W within Dr | 0.0200152 | 0.735 | 0.0344151 | 0.576 | no |
 | NPQt | p2 − W within Dr | 0.0843713 | 0.0839 | 0.0924876 | 0.124 | no |
 
-The largest percentage shifts occurred for contrasts whose unadjusted estimates were close to zero, so a small absolute change produces a large relative percentage. The substantive pattern remained stable: drought reduced both re-fitted ECSt and NPQt within W and both knockout lines except that the p2 ECSt drought contrast remained non-significant; the genotype contrasts retained their original significance calls.
+The largest percentage shifts occurred for contrasts whose unadjusted estimates were close to zero, so a small absolute change produces a large relative percentage.
 
-## Cross-date-device sensitivity analysis
+## Formal equivalence of device-adjusted contrasts
 
-Restricting the data to the two devices observed on every date produced **0 FDR-significance changes** across the same 14 contrasts. This reduces the specific concern that the primary result is driven by devices that are perfectly confounded with a single date.
+All 5,000 paired plant-cluster bootstrap replicates succeeded. The complete 90% interval for the device-induced change was inside ±0.10 pooled SD for **11/14 contrasts**. The other **3/14**—the three NPQt drought-within-genotype contrasts—were equivalent at ±0.20 SD. **0/14** were inconclusive at the secondary margin.
+
+| Outcome | Contrast | Change (SD) | 90% bootstrap interval | Equivalence |
+|---|---|---:|---:|---|
+| Re-fitted ECSt | Dr − Con within W | -0.032 | [-0.076, +0.015] SD | equivalent at 0.10 SD |
+| Re-fitted ECSt | Dr − Con within p1 | -0.006 | [-0.048, +0.039] SD | equivalent at 0.10 SD |
+| Re-fitted ECSt | Dr − Con within p2 | -0.049 | [-0.089, -0.002] SD | equivalent at 0.10 SD |
+| Re-fitted ECSt | p1 − W within Con | -0.010 | [-0.058, +0.034] SD | equivalent at 0.10 SD |
+| Re-fitted ECSt | p2 − W within Con | +0.006 | [-0.038, +0.048] SD | equivalent at 0.10 SD |
+| Re-fitted ECSt | p1 − W within Dr | +0.015 | [-0.018, +0.049] SD | equivalent at 0.10 SD |
+| Re-fitted ECSt | p2 − W within Dr | -0.011 | [-0.044, +0.025] SD | equivalent at 0.10 SD |
+| NPQt | Dr − Con within W | -0.092 | [-0.161, -0.031] SD | equivalent at 0.20 SD only |
+| NPQt | Dr − Con within p1 | -0.059 | [-0.128, +0.008] SD | equivalent at 0.20 SD only |
+| NPQt | Dr − Con within p2 | -0.067 | [-0.145, +0.008] SD | equivalent at 0.20 SD only |
+| NPQt | p1 − W within Con | -0.017 | [-0.077, +0.041] SD | equivalent at 0.10 SD |
+| NPQt | p2 − W within Con | -0.016 | [-0.082, +0.048] SD | equivalent at 0.10 SD |
+| NPQt | p1 − W within Dr | +0.017 | [-0.042, +0.078] SD | equivalent at 0.10 SD |
+| NPQt | p2 − W within Dr | +0.010 | [-0.049, +0.067] SD | equivalent at 0.10 SD |
+
+## Date and device sensitivity analyses
+
+Restricting the reference analysis to the two devices observed on every date produced **0 device-adjustment FDR changes**. Restricting Control and Drought to their concurrent dates (21 and 28 July; 471 observations) retained all contrast directions but produced **2 FDR changes** in the device-aware model: p2 ECSt Dr − Con became significant, and p2 − W NPQt within Drought became significant. The device-aware genotype × treatment × date interaction was significant for NPQt (p=0.0254) but not ECSt.
+
+The stricter within-plant-date analysis retained 496 observations from 147 sessions. Device remained associated with both outcomes:
+
+| Outcome | Device omnibus p | Partial R² | Bridge device × date p |
+|---|---:|---:|---:|
+| Re-fitted ECSt | 3.45e-07 | 12.1% | 0.0184 |
+| NPQt | 4.57e-11 | 16.1% | 0.034 |
+
+The bridge-device interaction was significant for both ECSt and NPQt, indicating that the relative offset between the two devices used on every date was not constant across dates. A single additive correction is therefore an approximation; device should remain in the inferential model rather than treating corrected point values as error-free.
 
 ## Interpretation and limitations
 
-The analysis detects meaningful device-associated structure, so device should be retained as a nuisance factor in inferential models and the adjusted columns may be useful for exploratory plots. Nevertheless, device adjustment does not alter the statistical conclusions drawn from Fig. 4 C/D in this dataset.
+The reference analysis is robust to adding device: directions and FDR calls are unchanged, and every contrast change is bounded within 0.20 SD. However, only 11 contrasts meet the stricter 0.10-SD criterion, two borderline FDR decisions change in the matched-date specification, NPQt shows date-dependent genotype/treatment structure, and bridge-device offsets vary by date. These results support the broad biological pattern while arguing against a stronger claim that instrument adjustment or date specification is immaterial.
 
 This is an observational robustness analysis rather than a calibration experiment. Device assignment was unbalanced across dates, environmental covariates may not remove all session effects, and model-estimated offsets are conditional on this experiment and protocol. A dedicated calibration study would randomize devices across the same leaves and reference standards.
 
 ## Reproducibility
 
-The complete analysis is in [`notebooks/multispeq_device_bias_validation.ipynb`](../notebooks/multispeq_device_bias_validation.ipynb). The main diagnostic is [`device_bias_validation.png`](device_bias_validation.png); machine-readable model summaries, offsets, contrast estimates, and sensitivity results are in the adjacent `device_bias_*.csv` files. The notebook also writes a git-ignored row-level table to `data/processed/fig4_device_adjusted.parquet`.
+The complete analysis is in [`notebooks/multispeq_device_bias_validation.ipynb`](../notebooks/multispeq_device_bias_validation.ipynb). The main diagnostic is [`device_bias_validation.png`](device_bias_validation.png); machine-readable model summaries, equivalence intervals, matched-date contrasts, offsets and sensitivity results are in the adjacent `device_bias_*.csv` files. The notebook also writes a git-ignored row-level table to `data/processed/fig4_device_adjusted.parquet`.
